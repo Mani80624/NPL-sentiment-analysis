@@ -1,17 +1,19 @@
 class RiskScorer:
-    """
-    Condiciones para ver el riesgo de suicidio dando diferentes pesos a las clases
-    """
+
     def score(self, features):
+
         score = (
-            features["hopeless_count"] * 2 +
-            features["death_count"] * 5 +
-            features["goodbye_count"] * 4
+            features["sadness_count"] * 3 +
+            features["fear_count"] * 3 +
+            features["anger_count"] * 2 +
+            features["disgust_count"] * 2 -
+            features["joy_count"] * 2 -
+            features["trust_count"] * 2
         )
 
-        if score >= 10:
+        if score >= 15:
             level = "ALTO"
-        elif score >= 5:
+        elif score >= 7:
             level = "MEDIO"
         else:
             level = "BAJO"
