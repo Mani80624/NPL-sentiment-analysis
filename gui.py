@@ -1,120 +1,102 @@
 import tkinter as tk
 from tkinter import scrolledtext
 
-from NLP.normalizacion import TextNormalizer
-from NLP.tokenizer import Tokenizer
-from NLP.stopwords import StopWordsRemover
-from NLP.sentiment_analyzer import SentimentAnalyzer
 from NLP.risk_pipeline import RiskDetectionPipeline
+from tools.model_manager import ModelManager
 
 
 class NLP_GUI:
 
     def __init__(self, root):
 
-        self.root = root # Ventana
+        self.root = root
 
-        # módulos NLP
-        self.normalizer = TextNormalizer()
-        self.tokenizer = Tokenizer()
-        self.stopwords = StopWordsRemover()
-        self.sentiment = SentimentAnalyzer()
-        self.risk = RiskDetectionPipeline()
+        self.pipeline = RiskDetectionPipeline()
+        self.model_manager = ModelManager()
 
-        # ESTADO
-        self.clean_text = None
-        self.tokens = None
-        self.filtered_tokens = None
-        self.diccionario = {'clean_text': [], 'tokens':[],
-                            'tokens_stopwords':[], 
-                            'emotion':[], 'counter':[], 
-                            'risk_score':[],'risk_level':[], 'risk_feature':[]}
-        
+        self.result = None
+        self.features = None
 
-        root.title("Laboratorio NLP")
-        root.geometry("800x700")
+        root.title("Detector de Riesgo NLP")
+        root.geometry("800x600")
 
         tk.Label(root, text="Texto", font=("Arial", 14)).pack()
 
         self.input = scrolledtext.ScrolledText(root, height=8, width=80)
         self.input.pack()
 
-        frame = tk.Frame(root)
-        frame.pack(pady=5)
+        tk.Button(
+            root,
+            text="Procesar Texto",
+            command=self.procesar,
+            bg="lightblue"
+        ).pack(pady=10)
 
-        tk.Button(frame, text="Normalizar", command=self.normalizar).grid(row=0, column=0, padx=5)
-        tk.Button(frame, text="Tokenizar", command=self.tokenizar).grid(row=0, column=1, padx=5)
-        tk.Button(frame, text="StopWords", command=self.filtrar).grid(row=0, column=2, padx=5)
-        tk.Button(frame, text="Sentiment", command=self.sentimiento).grid(row=0, column=3, padx=5)
-        tk.Button(frame, text="Riesgo", command=self.riesgo).grid(row=0, column=4, padx=5)
+        # Slider modelos
+        tk.Label(root, text="Modelo de riesgo").pack()
 
-        tk.Button(root, text="Limpiar Todo", command=self.resetear, bg="orange").pack()
+        self.modelo = tk.IntVar(value=1)
+
+        self.slider = tk.Scale(
+            root,
+            from_=1,
+            to=4,
+            orient=tk.HORIZONTAL,
+            variable=self.modelo,
+            command=self.actualizar_modelo,
+            label="1:Bayes  2:CNN  3:RF  4:SVM"
+        )
+        self.slider.pack()
 
         self.output = scrolledtext.ScrolledText(root, height=20, width=90)
         self.output.pack()
 
-    # -------- funciones ----------
+    # -------- lógica --------
 
-    def procesamiento(self):
-        texto = self.input.get("1.0", tk.END)
-        self.diccionario = self.risk.process(texto)
-    
+    def procesar(self):
+        texto = self.input.get("1.0", tk.END).strip()
 
-    def limpiar_salida(self):
+        if not texto:
+            return
+
+        self.result = self.pipeline.process(texto)
+        self.features = self.result["risk_features"]
+
+        self.mostrar_resultado()
+
+    def actualizar_modelo(self, event=None):
+        if self.features:
+            self.mostrar_resultado()
+
+    def calcular_riesgo(self):
+
+        modelo_id = self.modelo.get()
+
+        return self.model_manager.predict(
+            modelo_id,
+            self.features
+        )
+
+    def mostrar_resultado(self):
+
         self.output.delete("1.0", tk.END)
 
-    def normalizar(self):
-        self.limpiar_salida()
-        self.procesamiento()
-        self.output.insert(tk.END, f"TEXTO NORMALIZADO:\n{self.diccionario['clean_text']}")
+        score, level = self.calcular_riesgo()
 
-    def tokenizar(self):
-
-        self.limpiar_salida()
-        if not self.diccionario['tokens']:
-            self.procesamiento()
-        self.output.insert(tk.END, f"TOKENS:\n{self.diccionario['tokens']}")
-
-    def filtrar(self):
-
-        self.limpiar_salida()
-        if not self.diccionario['tokens_stopwords']:
-            self.procesamiento()
-
-        self.output.insert(tk.END, f"TOKENS FILTRADOS:\n{self.diccionario['tokens_stopwords']}")
-
-    def sentimiento(self):
-
-        self.limpiar_salida()
-
-        if not self.diccionario['emotion'] and not self.diccionario['counter']:
-            self.procesamiento()
-
-        self.output.insert(tk.END, f"EMOCION:\n{self.diccionario['emotion']}\n\nCONTEO:\n{self.diccionario['counter']}")
-
-    def riesgo(self):
-
-        self.limpiar_salida()
-        if not self.diccionario['risk_level'] and not self.diccionario['risk_score']:
-            self.procesamiento()
+        nombres = {
+            1: "Naive Bayes",
+            2: "CNN",
+            3: "Random Forest",
+            4: "SVM"
+        }
 
         self.output.insert(
             tk.END,
-            f"RIESGO:\nNivel: {self.diccionario['risk_level']}\nScore: {self.diccionario['risk_score']}"
+            f"MODELO: {nombres[self.modelo.get()]}\n\n"
+            f"EMOCION DOMINANTE: {self.result['dominant_emotion']}\n\n"
+            f"RIESGO:\nNivel: {level}\nScore: {score}\n\n"
+            f"EMOCIONES:\n{self.features}"
         )
-
-    def resetear(self):
-
-        self.clean_text = None
-        self.tokens = None
-        self.filtered_tokens = None
-        self.diccionario = {'clean_text': [], 'tokens':[], 
-                            'tokens_stopwords':[],
-                            'emotion':[], 'counter':[], 
-                            'risk_score':[],'risk_level':[], 'risk_feature':[]}
-
-        self.input.delete("1.0", tk.END)
-        self.limpiar_salida()
 
 
 if __name__ == "__main__":

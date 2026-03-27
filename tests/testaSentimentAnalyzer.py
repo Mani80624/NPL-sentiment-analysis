@@ -42,11 +42,6 @@ tokens = ['well', 'right', 'i', 'woke', 'midday', 'nap', 'sort', 'weird', 'but',
 
 # Tets map_emotion method
 # clasificación en emotion_lexicon
-print(f'Resultado: {sentiment.map_emotion("cry")}, Resultado esperado: sad')
-print(f'Resultado: {sentiment.map_emotion("rage")}, Resultado esperado: anger')
-print(f'Resultado: {sentiment.map_emotion("smile")}, Resultado esperado: joy')
-print(f'Resultado: {sentiment.map_emotion("panic")}, Resultado esperado: fear') 
-
 
 
 # Test analyze method
