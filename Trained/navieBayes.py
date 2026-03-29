@@ -20,10 +20,10 @@ trained_select['riesgo'] = trained_select['riesgo'].replace({"Bajo":0, "Medio": 
 
 trained_select['original_text'] = trained_select['original_text'].apply(normalizacion.clean_text)
 
-#navie_bayes.trainModel(trained_select, "original_text", "riesgo")
-#navie_bayes.evaluate()
+navie_bayes.trainModel(trained_select, "original_text", "riesgo")
+navie_bayes.evaluate()
 #navie_bayes.plot_confusion_matrix()
 #navie_bayes.save_model("Trained/NB_without_stopWords_2")
-navie_bayes.cross_validation(trained_select, "original_text", "riesgo",10)
+#navie_bayes.cross_validation(trained_select, "original_text", "riesgo",10)
 
-navie_bayes.plot_cv_results()
+#navie_bayes.plot_cv_results()

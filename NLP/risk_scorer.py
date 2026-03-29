@@ -28,6 +28,7 @@ class RiskScorer:
             features["anticipation_count"]*0.05+
             features["surprise_count"]*0.08
         )
+        
 
         return score
     

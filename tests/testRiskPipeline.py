@@ -51,10 +51,10 @@ text = "I'm really unsure about this assignment because " \
 
 dic = risk_detection.process(text)
 
-print(f"\nTexto limpio:\n{dic['clean_text']}\n")
-print(f"tokens:\n{dic['tokens']}\n")
-print(f"emotion:\n{dic['emotion']}\n")
-print(f"counter:\n{dic['counter']}\n")
-print(f"risk_score:\n{dic['risk_score']}\n")
-print(f"risk_level:\n{dic['risk_level']}\n")
-print(f"risk_features:\n{dic['risk_features']}\n")
+
+#print(f"emotion:\n{dic["risk_score"]}\n")
+#print(f"counter:\n{dic['risk_level']}\n")
+#print(f"risk_score:\n{dic['dominant_emotion']}\n")
+#print(f"risk_level:\n{dic['dominant_count']}\n")
+#print(f"risk_features:\n{dic['risk_features']}\n")
+print(dic['risk_features'])

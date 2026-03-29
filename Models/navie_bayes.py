@@ -94,14 +94,14 @@ class NavieBayes:
         """Grafica los resultados de cada fold"""
         if not hasattr(self, "scores"):
             raise ValueError("Primero ejecuta cross_validation()")
-
+        
         metrics = ["test_accuracy", "test_precision_macro", "test_recall_macro", "test_f1_macro"]
+        labels = ["Accuracy", "Precision", "Recall", "F1-Score"]  # Nuevas etiquetas
 
         plt.figure(figsize=(10,6))
-        for metric in metrics:
-            plt.plot(self.scores[metric], marker="o", label=metric)
+        for metric, label in zip(metrics, labels):
+            plt.plot(self.scores[metric], marker="o", label=label)
 
-        plt.title("Cross-Validation results Navie Bayes per Fold")
         plt.xlabel("Fold")
         plt.ylabel("Score")
         plt.legend()
@@ -120,15 +120,15 @@ class NavieBayes:
         cm = confusion_matrix(self.y_test, y_pred)
 
         # Etiquetas de clases
-        labels = ["Bajo", "Mediano", "Alto"]
+        labels = ["Low", "Medium", "High"]
 
         # Gráfico con seaborn
         plt.figure(figsize=(7,5))
         sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
                     xticklabels=labels, yticklabels=labels)
 
-        plt.title("Matriz de Confusión")
-        plt.xlabel("Predicción")
+        #plt.title("Matriz de Confusión")
+        plt.xlabel("Predict")
         plt.ylabel("Real")
         plt.show()
 
