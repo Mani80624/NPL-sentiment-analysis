@@ -57,16 +57,17 @@ x > 0.53 riesgo alto
 def risk_level(df):
     df.loc[df["score_wins"] <= 0.0, "riesgo"] = "Bajo"
     
-    df.loc[(df["score_wins"] > 0.0) & (df["score_wins"] <= 0.035), "riesgo"] = "Medio"
+    df.loc[(df["score_wins"] > 0.0) & (df["score_wins"] <= 0.03), "riesgo"] = "Medio"
     
-    df.loc[df["score_wins"] >= 0.035, "riesgo"] = "Alto"
+    df.loc[df["score_wins"] > 0.03, "riesgo"] = "Alto"
 
     return df
 
 scores = norm_score['score_norm'].values
 scores_wins = winsorize(scores, limits=[0.04, 0.04])
 norm_score["score_wins"] = scores_wins
+print(norm_score["score_wins"].describe())
 norm_score = risk_level(norm_score)
 
-norm_score.to_csv('emotions_risk_scores_1.csv', index=False)
-
+norm_score.to_csv('C:/Users/ma-nu/Downloads/minería de datos/emotions_risk_scores_1.csv', index=False)
+print("El archivo se ha creado!")

@@ -138,7 +138,6 @@ class NLP_GUI:
 
         if not texto:
             return
-
         self.result = self.pipeline.process(texto)
         self.features = self.result["risk_features"]
 
