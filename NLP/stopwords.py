@@ -22,3 +22,6 @@ class StopWordsRemover:
     def remove(self, tokens):
         filtered = [t for t in tokens if t.lower() not in self.stop_words]
         return filtered
+    
+    def get_stopwords(self):
+        return self.stop_words
