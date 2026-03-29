@@ -9,7 +9,7 @@ class RiskScorer:
         anger -> 16%
         disgust -> 6%
         trust -> 12%
-        surprice-> 8%
+        surprise-> 8%
         anticipation -> 5%
         joy -> 3%
         """
@@ -28,7 +28,14 @@ class RiskScorer:
             features["anticipation_count"]*0.05+
             features["surprise_count"]*0.08
         )
+        
+        if score >= 0.7:
+            level = "alto"
+        elif score >= 0.4:
+            level = "medio"
+        else:
+            level = "bajo"
 
-        return score
+        return score, level
     
     
