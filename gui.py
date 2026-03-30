@@ -188,10 +188,12 @@ class NLP_GUI:
     def calcular_riesgo(self):
 
         modelo_id = self.modelo.get()
+        texto_orginal = self.input.get("1.0", tk.END).strip()
 
         return self.model_manager.predict(
             modelo_id,
-            self.features
+            self.features,
+            raw_text = texto_orginal
         )
 
     def mostrar_resultado(self):
