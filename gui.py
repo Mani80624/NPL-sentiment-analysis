@@ -55,7 +55,7 @@ class NLP_GUI:
         self.panel_izquierdo()
         self.panel_derecho()
         
-        # Interfaz
+        # Panel Izquierdo
         
     def panel_izquierdo(self):
         crear_titulo(self.left_frame, "Texto").pack(pady=(12, 8))
