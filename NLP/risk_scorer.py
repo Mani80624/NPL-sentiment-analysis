@@ -27,15 +27,7 @@ class RiskScorer:
             features["trust_count"] * 0.12+
             features["anticipation_count"]*0.05+
             features["surprise_count"]*0.08
-        )
-        
-        if score >= 0.7:
-            level = "alto"
-        elif score >= 0.4:
-            level = "medio"
-        else:
-            level = "bajo"
-
-        return score, level
+            )
+        return score
     
     

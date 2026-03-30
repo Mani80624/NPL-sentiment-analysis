@@ -62,14 +62,14 @@ class RiskDetectionPipeline:
         features = self.feature_extractor.extract(tokens)
 
         # 3. Calcular riesgo
-        score, level = self.scorer.score(features)
+        score = self.scorer.score(features)
 
         # 4. Emoción dominante
         dominant_emotion, count = self.get_dominant_emotion(features)
 
         # 5. Agregar resultados
         result["risk_score"] = score
-        result["risk_level"] = level
+        #result["risk_level"] = level
         result["risk_features"] = features
         result["dominant_emotion"] = dominant_emotion
         result["dominant_count"] = count
