@@ -10,11 +10,13 @@ class TextNormalizer:
         pass
 
     def clean_text(self, text):
+        text = str(text)
         text = text.lower()
         text = re.sub(r"http\S+", "", text)
         text = re.sub(r"[^a-zA-ZáéíóúñÁÉÍÓÚÑ\s]", "", text)
         text = re.sub(r"\s+", " ", text).strip()
         return text
+
 
     def split_sentences(self, text):
         # opcional, no es necesario

@@ -74,8 +74,7 @@ class NLP_GUI:
 
         return self.model_manager.predict(
             modelo_id,
-            features=self.features,
-            tokens=self.result["tokens"]
+            self.features
         )
 
     def mostrar_resultado(self):

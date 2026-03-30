@@ -43,8 +43,13 @@ tokens = ['well', 'right', 'i', 'woke', 'midday', 'nap', 'sort', 'weird', 'but',
 # Tets map_emotion method
 # clasificación en emotion_lexicon
 
+#lexicon = sentiment.load_nrc_lexicon("C:/Users/ma-nu/Downloads/sentiment-analysis/NPL-sentiment-analysis/Lexicon/NRC-Emotion-Lexicon-Wordlevel-v0.92.txt")
+
+
+word = sentiment.normalize("playing")
+print(word)
 
 # Test analyze method
-dominant_sentiment, counter_sentiment = sentiment.analyze(tokens)
+#dominant_sentiment, counter_sentiment = sentiment.analyze(tokens)
 
-print(f'Emoción dominante: {dominant_sentiment}\nConteo de sentimientos: {counter_sentiment}')
+#print(f'Emoción dominante: {dominant_sentiment}\nConteo de sentimientos: {counter_sentiment}')
