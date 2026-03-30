@@ -41,11 +41,7 @@ resultados = svm_model.evaluacion(output_dir="results")
 print("\nAccuracy:")
 print(resultados["accuracy"])
 
-print("\nReporte de clasificación:")
 print(resultados["report"])
-
-print("\nMatriz de confusión:")
-print(resultados["confusion_matrix"])
 
 print("\nSe generaron archivos en la carpeta 'results':")
 print("- svm_report.txt")

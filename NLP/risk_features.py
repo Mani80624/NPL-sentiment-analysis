@@ -1,49 +1,38 @@
 class RiskFeatureExtractor:
-    """
-    Clase que especifica qué emociones estan relacionadas a qué palabras y lleva un conteo dependiendo 
-    en que emoción se clasifique:
-    hopeless, death o goodbye
-    """
 
-    def __init__(self):
-        """
-        Palabras asociadas a emociones
-        """
+    def __init__(self, lexicon_path):
+        self.emotions = [
+            "anger", "anticipation", "disgust", "fear",
+            "joy", "sadness", "surprise", "trust"
+        ]
+        self._open_file(lexicon_path)
 
-        self.hopeless_words = {
-            "hopeless", "worthless", "empty",
-            "tired", "alone", "useless",
-            "nothing", "nobody"
-        }
+    def _open_file(self, lexicon_path):
+        # Diccionario: palabra -> emociones activas
+        self.lexicon = {}
+        with open(lexicon_path, "r", encoding="utf-8") as f:
+            for line in f:
+                word, emotion, value = line.strip().split("\t")
 
-        self.death_words = {
-            "die", "death", "suicide",
-            "kill", "disappear", "end"
-        }
+                if emotion not in self.emotions:
+                    continue
 
-        self.goodbye_patterns = {
-            "goodbye", "farewell", "last time"
-        }
+                if int(value) == 1:
+                    if word not in self.lexicon:
+                        self.lexicon[word] = set()
+
+                    self.lexicon[word].add(emotion)
+        
 
     def extract(self, tokens):
 
-        features = {
-            "hopeless_count": 0,
-            "death_count": 0,
-            "goodbye_count": 0,
-            "text_length": len(tokens)
-        }
-        """Recorre la lista de tokens y verifica si las palabras se encuentran en los diccionarios
-        del método constructor, en caso de que encuentre uno aumenta en el contador del diccionario"""
+        # Inicializar contador de emociones
+        features = {f"{e}_count": 0 for e in self.emotions}
+        features["text_length"] = len(tokens)
+
         for t in tokens:
-
-            if t in self.hopeless_words:
-                features["hopeless_count"] += 1
-
-            if t in self.death_words:
-                features["death_count"] += 1
-
-            if t in self.goodbye_patterns:
-                features["goodbye_count"] += 1
+            if t in self.lexicon:
+                for emotion in self.lexicon[t]:
+                    features[f"{emotion}_count"] += 1
 
         return features

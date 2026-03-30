@@ -1,6 +1,6 @@
 from NLP.risk_features import RiskFeatureExtractor
 
-risk_feature = RiskFeatureExtractor()
+risk_feature = RiskFeatureExtractor("C:/Users/ma-nu/Downloads/sentiment-analysis/NPL-sentiment-analysis/Lexicon/NRC-Emotion-Lexicon-Wordlevel-v0.92.txt")
 tokens = ['well', 'right', 'i', 'woke', 'midday', 'nap', 'sort', 'weird', 'but', 'ever', 
 'since', 'i', 'moved', 'texas', 'i', 'problems', 'concentrating', 'things', 'i', 
 'remember', 'starting', 'my', 'homework', 'th', 'grade', 'soon', 'clock', 'struck', 
