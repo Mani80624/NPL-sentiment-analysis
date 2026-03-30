@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import scrolledtext
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
+#s
 from NLP.Plutchik_visualization import Visualization_Plutchik
 from NLP.risk_pipeline import RiskDetectionPipeline
 from tools.model_manager import ModelManager
