@@ -5,7 +5,7 @@ from NLP.stopwords import StopWordsRemover
 from pathlib import Path
 import pandas as pd
 
-
+# Entrenamiento real de Random Forest con el dataset
 random_forest = RandomForest()
 normalizacion = TextNormalizer()
 tokenizar = Tokenizer()
@@ -18,5 +18,11 @@ trained_select['riesgo'] = trained_select['riesgo'].replace({"Bajo":0, "Medio": 
 
 trained_select['original_text'] = trained_select['original_text'].apply(normalizacion.clean_text)
 
-random_forest.enntrenamientoModelo(trained_select, "original_text", "riesgo")
+random_forest.entrenamientoModelo(trained_select, "original_text", "riesgo")
 random_forest.evaluacion()
+
+random_forest.plot_confusion_matrix()
+random_forest.guardar_modelo("Trained/RF_without_stopWords_2")
+random_forest.cross_validation(trained_select, "original_text", "riesgo",10)
+
+random_forest.plot_cv_results()
