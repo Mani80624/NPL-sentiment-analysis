@@ -186,7 +186,7 @@ class NLP_GUI:
         self.plot_canvas.draw()
 
     def calcular_riesgo(self):
-
+        #Agrega texto 
         modelo_id = self.modelo.get()
         texto_orginal = self.input.get("1.0", tk.END).strip()
 
