@@ -9,7 +9,7 @@ class RiskScorer:
         anger -> 16%
         disgust -> 6%
         trust -> 12%
-        surprice-> 8%
+        surprise-> 8%
         anticipation -> 5%
         joy -> 3%
         """
@@ -27,8 +27,7 @@ class RiskScorer:
             features["trust_count"] * 0.12+
             features["anticipation_count"]*0.05+
             features["surprise_count"]*0.08
-        )
-
+            )
         return score
     
     
