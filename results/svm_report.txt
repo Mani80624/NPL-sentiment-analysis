@@ -1,0 +1,13 @@
+Accuracy:
+0.9942357921282536
+
+Classification Report:
+              precision    recall  f1-score   support
+
+        Alto       1.00      0.99      0.99      3368
+        Bajo       0.99      1.00      1.00      2980
+       Medio       0.99      0.99      0.99      4755
+
+    accuracy                           0.99     11103
+   macro avg       0.99      0.99      0.99     11103
+weighted avg       0.99      0.99      0.99     11103

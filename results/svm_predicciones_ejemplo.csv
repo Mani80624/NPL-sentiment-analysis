@@ -1,0 +1,4 @@
+anger_count,anticipation_count,disgust_count,fear_count,joy_count,sadness_count,surprise_count,trust_count,text_length,score,score_norm,score_wins,prediccion_riesgo,prob_Low,prob_Medium,prob_High
+1,2,0,1,4,0,1,3,20,8,0.4,0.4,Medio,0.14276272959673567,0.018380750486282436,0.838856519916982
+5,0,3,4,0,6,0,0,18,22,1.22,1.22,Medio,0.14275357184311882,0.018380379713540805,0.8388660484433403
+2,1,1,2,1,3,0,1,22,12,0.54,0.54,Medio,0.1427535718597746,0.018380379714228103,0.8388660484259973
