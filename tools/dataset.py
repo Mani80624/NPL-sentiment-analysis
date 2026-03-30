@@ -1,33 +1,59 @@
 import torch
-from torch.utils.data import Dataset
 
 
-class TextDataset(Dataset):
+class TextDataset(torch.utils.data.Dataset):
 
-    def __init__(self, tokenized_texts, labels, vocab, max_len=50):
+    def __init__(self, texts, labels, vocab, max_len=150):
+        """
+        texts: lista de textos (str) o lista de tokens (list[str])
+        labels: lista de etiquetas (int)
+        vocab: diccionario palabra → índice
+        max_len: longitud máxima de secuencia
+        """
 
-        self.texts = tokenized_texts
+        self.texts = texts
         self.labels = labels
         self.vocab = vocab
         self.max_len = max_len
 
-    def encode(self, tokens):
+    def encode(self, text):
+        """
+        Convierte texto o lista de tokens a índices
+        """
 
-        indices = [self.vocab.get(t, 0) for t in tokens]
+        # Detectar tipo de entrada
+        if isinstance(text, list):
+            tokens = text
 
-        if len(indices) < self.max_len:
-            indices += [0] * (self.max_len - len(indices))
+        elif isinstance(text, str):
+            tokens = text.split()
+
         else:
-            indices = indices[:self.max_len]
+            # caso raro (None, NaN, etc)
+            tokens = []
 
-        return torch.tensor(indices, dtype=torch.long)
+        # convertir a índices
+        ids = [self.vocab.get(token, 0) for token in tokens]
+
+        # padding / truncado
+        if len(ids) < self.max_len:
+            ids += [0] * (self.max_len - len(ids))
+        else:
+            ids = ids[:self.max_len]
+
+        return ids
 
     def __len__(self):
         return len(self.texts)
 
     def __getitem__(self, idx):
 
-        x = self.encode(self.texts[idx])
-        y = torch.tensor(self.labels[idx], dtype=torch.long)
+        text = self.texts[idx]
+        label = self.labels[idx]
 
-        return x, y
+        encoded = self.encode(text)
+
+        return (
+            torch.tensor(encoded, dtype=torch.long),
+            torch.tensor(label, dtype=torch.long)
+        )

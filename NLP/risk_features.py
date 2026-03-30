@@ -5,10 +5,11 @@ class RiskFeatureExtractor:
             "anger", "anticipation", "disgust", "fear",
             "joy", "sadness", "surprise", "trust"
         ]
+        self._open_file(lexicon_path)
 
+    def _open_file(self, lexicon_path):
         # Diccionario: palabra -> emociones activas
         self.lexicon = {}
-
         with open(lexicon_path, "r", encoding="utf-8") as f:
             for line in f:
                 word, emotion, value = line.strip().split("\t")
@@ -21,6 +22,7 @@ class RiskFeatureExtractor:
                         self.lexicon[word] = set()
 
                     self.lexicon[word].add(emotion)
+        
 
     def extract(self, tokens):
 
