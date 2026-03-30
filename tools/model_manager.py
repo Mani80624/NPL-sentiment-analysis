@@ -5,7 +5,7 @@ class ModelManager:
     def __init__(self):
         self.models_paths = {
             1: "Trained/NB_without_stopWords_2.pkl",
-            2: "Trained/CNN_without_stopWords_2.pkl",
+            2: "Trained/cnn_model.pkl",
             3: "Trained/RF_without_stopWords_2.pkl",
             4: "Trained/SVM_without_stopWords_2.pkl"
         }
