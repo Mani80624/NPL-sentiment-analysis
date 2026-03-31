@@ -86,7 +86,7 @@ class ModelManager:
         # Convertir predicción a nivel de riesgo
         risk_level = self._nivel(prediction)
         
-        return confidence, risk_level
+        return float(confidence), risk_level
 
     def _nivel(self, prediction):
         """Mapea la predicción del modelo a nivel de riesgo"""

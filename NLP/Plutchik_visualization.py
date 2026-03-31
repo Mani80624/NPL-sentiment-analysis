@@ -18,11 +18,11 @@ class Visualization_Plutchik:
             "joy": max(0, features.get("joy_count", 0)),
             "trust": max(0, features.get("trust_count", 0)),
             "fear": max(0, features.get("fear_count", 0)),
-            "surprise": max(0, features.get("surprise_count", 0)),
+            "surprise": max(0, abs(features.get("surprise_count", 0))),
             "sadness": max(0, features.get("sadness_count", 0)),
-            "disgust": max(0, features.get("disgust_count", 0)),
+            "disgust": max(0, abs(features.get("disgust_count", 0))),
             "anger": max(0, features.get("anger_count", 0)),
-            "anticipation": max(0, features.get("anticipation_count", 0)),
+            "anticipation": max(0, abs(features.get("anticipation_count", 0))),
         }
         
         max_val = max(emociones.values()) if emociones.values() else 1
