@@ -163,7 +163,7 @@ class NLP_GUI:
             "anger_count": 0,
             "anticipation_count": 0,
             },
-            "Sin datos"
+            "No Data"
             )
         self.plot_canvas.draw()
 
