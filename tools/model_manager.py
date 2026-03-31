@@ -1,7 +1,8 @@
-import joblib
 import torch
 import torch.nn.functional as F
+import joblib
 #import numpy as np
+
 
 class CNNsklearnWrapper:
     def __init__(self, model, vocab, max_len=150):
@@ -86,7 +87,7 @@ class ModelManager:
         # Convertir predicción a nivel de riesgo
         risk_level = self._nivel(prediction)
         
-        return confidence, risk_level
+        return float(confidence), risk_level
 
     def _nivel(self, prediction):
         """Mapea la predicción del modelo a nivel de riesgo"""

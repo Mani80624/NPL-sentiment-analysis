@@ -5,6 +5,7 @@ from NLP.Plutchik_visualization import Visualization_Plutchik
 from NLP.risk_pipeline import RiskDetectionPipeline
 from tools.model_manager import ModelManager
 
+
 from gui.estilos import (
     COLOR_FONDO_VENTANA,
     COLOR_PANEL_IZQUIERDO,
@@ -29,7 +30,7 @@ class NLP_GUI:
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Detector de Riesgo NLP")
+        self.root.title("NLP Risk Detector")
         self.root.geometry("1400x750")
         self.root.configure(bg=COLOR_FONDO_VENTANA)
         
@@ -57,13 +58,13 @@ class NLP_GUI:
         # Panel Izquierdo
         
     def panel_izquierdo(self):
-        crear_titulo(self.left_frame, "Texto").pack(pady=(12, 8))
+        crear_titulo(self.left_frame, "Text").pack(pady=(12, 8))
         self.input = crear_texto_scroll(self.left_frame, alto=8, ancho=80)
         self.input.pack(fill="x", padx=12, pady=(0, 10))
             
         self.boton_procesar = crear_boton(
         self.left_frame,
-        texto="Procesar Texto",
+        texto="Process Text",
         comando=self.procesar,
         tipo="primario"
         )
@@ -71,7 +72,7 @@ class NLP_GUI:
 
         self.boton_limpiar = crear_boton(
             self.left_frame,
-            texto="Limpiar",
+            texto="Clean",
             comando=self.limpiar,
             tipo="limpiar"
         )
@@ -79,7 +80,7 @@ class NLP_GUI:
         
         tk.Label(
             self.left_frame,
-            text="Modelo de riesgo",
+            text="Risk models",
             font=FUENTE_SUBTITULO,
             bg=COLOR_PANEL_IZQUIERDO,
             fg=COLOR_SUBTITULO
@@ -118,7 +119,7 @@ class NLP_GUI:
         
     # Panel Derecho
     def panel_derecho(self):
-        crear_titulo(self.right_frame, "Gráfico de Plutchik").pack(pady=(12, 8))
+        crear_titulo(self.right_frame, "Plutchik's Graph").pack(pady=(12, 8))
             
         self.plot_canvas = FigureCanvasTkAgg(
         self.visualization.get_figure(),
@@ -210,23 +211,22 @@ class NLP_GUI:
 
         self.output.insert(
             tk.END,
-            f"MODELO: {nombres[self.modelo.get()]}\n\n"
-            f"EMOCION DOMINANTE: {self.result['dominant_emotion']}\n\n"
-            f"RIESGO:\n"
-            f"  Nivel: {level}\n"
-            f"  Score: {score}\n\n"
-            f"EMOCIONES DETECTADAS:\n"
-            f"  Alegría: {self.features.get('joy_count', 0)}\n"
-            f"  Confianza: {self.features.get('trust_count', 0)}\n"
-            f"  Miedo: {self.features.get('fear_count', 0)}\n"
-            f"  Sorpresa: {self.features.get('surprise_count', 0)}\n"
-            f"  Tristeza: {self.features.get('sadness_count', 0)}\n"
-            f"  Disgusto: {self.features.get('disgust_count', 0)}\n"
-            f"  Ira: {self.features.get('anger_count', 0)}\n"
-            f"  Anticipación: {self.features.get('anticipation_count', 0)}\n"
-            f"  Longitud del texto: {self.features.get('text_length', 0)}"
+            f"MODEL: {nombres[self.modelo.get()]}\n\n"
+            f"DOMINANT EMOTION: {self.result['dominant_emotion']}\n\n"
+            f"RISK:\n"
+            f"  Level: {level}\n"
+            f"  Score: {round(score,2)}\n\n"
+            f"EMOTIONS DETECTED:\n"
+            f"  Joy: {self.features.get('joy_count', 0)}\n"
+            f"  Trust: {self.features.get('trust_count', 0)}\n"
+            f"  Fear: {self.features.get('fear_count', 0)}\n"
+            f"  Surprise: {abs(self.features.get('surprise_count', 0))}\n"
+            f"  Sadness: {self.features.get('sadness_count', 0)}\n"
+            f"  Disgust: {self.features.get('disgust_count', 0)}\n"
+            f"  Anger: {self.features.get('anger_count', 0)}\n"
+            f"  Anticipation: {abs(self.features.get('anticipation_count', 0))}\n"
+            f"  Text length: {self.features.get('text_length', 0)}"
             )
-
 
 if __name__ == "__main__":
     root = tk.Tk()
