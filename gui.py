@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import scrolledtext
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
 from NLP.Plutchik_visualization import Visualization_Plutchik
 from NLP.risk_pipeline import RiskDetectionPipeline
 from tools.model_manager import ModelManager
@@ -186,12 +185,14 @@ class NLP_GUI:
         self.plot_canvas.draw()
 
     def calcular_riesgo(self):
-
+        #Agrega texto 
         modelo_id = self.modelo.get()
+        texto_orginal = self.input.get("1.0", tk.END).strip()
 
         return self.model_manager.predict(
             modelo_id,
-            self.features
+            self.features,
+            raw_text = texto_orginal
         )
 
     def mostrar_resultado(self):
