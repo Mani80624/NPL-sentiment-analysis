@@ -1,7 +1,8 @@
-import joblib
 import torch
 import torch.nn.functional as F
+import joblib
 #import numpy as np
+
 
 class CNNsklearnWrapper:
     def __init__(self, model, vocab, max_len=150):
