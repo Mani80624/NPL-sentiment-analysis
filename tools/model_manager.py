@@ -1,7 +1,8 @@
-import joblib
 import torch
 import torch.nn.functional as F
+import joblib
 #import numpy as np
+
 
 class CNNsklearnWrapper:
     def __init__(self, model, vocab, max_len=150):
@@ -45,8 +46,8 @@ class ModelManager:
         self.models_paths = {
             1: "Trained/NB_without_stopWords_2.pkl",
             2: "Trained/cnn_full_model.pkl",
-            3: "Trained/RF_without_stopWords_2.pkl",
-            4: "Trained/SVM_without_stopWords_2.pkl"
+            3: "C:/Users/ma-nu/Downloads/minería de datos/modelos entrenados/RF_without_stopWords_2.pkl",
+            4: "C:/Users/ma-nu/Downloads/minería de datos/modelos entrenados/svm_model.pkl"
         }
         
         # Cargar los modelos
