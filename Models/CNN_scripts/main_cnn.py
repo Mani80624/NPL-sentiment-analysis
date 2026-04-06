@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 
 from Models.cnn_model import TextCNN
-from tools.dataset import TextDataset
+from Models.CNN_scripts.dataset import TextDataset
 
 
 # FOCAL LOSS (opcional)

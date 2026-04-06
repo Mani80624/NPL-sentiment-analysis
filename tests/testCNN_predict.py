@@ -1,4 +1,4 @@
-from predictions.cnn_predictor import CNNPredictor
+from Models.CNN_scripts.cnn_predictor import CNNPredictor
 
 predictor = CNNPredictor("cnn_complete.pth")
 

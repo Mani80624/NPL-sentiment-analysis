@@ -1,5 +1,5 @@
 from NLP.risk_pipeline import RiskDetectionPipeline
-from predictions.cnn_predictor import CNNPredictor
+from Models.CNN_scripts.cnn_predictor import CNNPredictor
 
 pipeline = RiskDetectionPipeline()
 cnn = CNNPredictor("cnn_complete.pth")
