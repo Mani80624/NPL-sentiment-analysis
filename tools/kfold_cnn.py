@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import torch
 
 from sklearn.model_selection import KFold
@@ -17,7 +16,6 @@ from Models.cnn_model import TextCNN
 # Evaluación por fold
 # =========================
 def evaluate_fold(model, X_test, y_test, vocab):
-
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     loader = DataLoader(
@@ -31,7 +29,6 @@ def evaluate_fold(model, X_test, y_test, vocab):
     with torch.no_grad():
         for x, y in loader:
             x = x.to(device)
-
             outputs = model(x)
             preds = torch.argmax(outputs, dim=1).cpu().numpy()
 
@@ -47,41 +44,12 @@ def evaluate_fold(model, X_test, y_test, vocab):
 
 
 # =========================
-# Gráfica
-# =========================
-def plot_kfold(metrics):
-
-    folds = list(range(1, len(metrics["accuracy"]) + 1))
-
-    plt.style.use("seaborn-v0_8")
-
-    plt.figure(figsize=(8, 5))
-
-    plt.plot(folds, metrics["accuracy"], marker='o', label="Accuracy")
-    plt.plot(folds, metrics["precision"], marker='o', label="Precision")
-    plt.plot(folds, metrics["recall"], marker='o', label="Recall")
-    plt.plot(folds, metrics["f1"], marker='o', label="F1-score")
-
-    plt.grid(True)
-    plt.xlabel("Fold")
-    plt.ylabel("Score")
-    plt.legend()
-
-    plt.tight_layout()
-    plt.savefig("kfold_metrics.png")
-    plt.show()
-
-
-# =========================
 # K-FOLD TRAINING
 # =========================
 def kfold_training(k=10):
-
-    print("Starting K-Fold Cross Validation...")
+    print(f"Iniciando {k}-Fold Cross Validation...")
 
     X, y = load_dataset("data/emotions_risk_scores_1.csv")
-
-    # NO convertir X a numpy
     y = np.array(y)
 
     kf = KFold(n_splits=k, shuffle=True, random_state=42)
@@ -96,18 +64,16 @@ def kfold_training(k=10):
     fold = 1
 
     for train_idx, test_idx in kf.split(X):
-
-        print(f"\nFOLD {fold}")
+        print(f"\n--- TRABAJANDO EN FOLD {fold} ---")
 
         X_train = [X[i] for i in train_idx]
         X_test = [X[i] for i in test_idx]
-
         y_train, y_test = y[train_idx], y[test_idx]
 
-        # vocab SOLO con train
+        # Vocabulario específico del fold
         vocab = build_vocab(X_train)
 
-        # entrenar
+        # Entrenar (Carga el modelo interno según tu configuración)
         train_model(
             X_train, y_train,
             X_test, y_test,
@@ -117,9 +83,8 @@ def kfold_training(k=10):
             patience=3
         )
 
-        # cargar modelo
+        # Cargar el mejor modelo guardado en este fold
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
         checkpoint = torch.load(
             "best_cnn_model.pth",
             map_location=device,
@@ -129,26 +94,32 @@ def kfold_training(k=10):
         model = TextCNN(checkpoint["vocab_size"]).to(device)
         model.load_state_dict(checkpoint["model_state"])
 
-        # evaluar
+        # Evaluar
         results = evaluate_fold(model, X_test, y_test, vocab)
 
         for key in metrics:
             metrics[key].append(results[key])
 
-        print(f"Fold {fold}: {results}")
-
+        print(f"Resultados Fold {fold}: Acc: {results['accuracy']:.4f}, F1: {results['f1']:.4f}")
         fold += 1
 
-    print("\nFINAL RESULTS")
-    print("Mean Accuracy:", np.mean(metrics["accuracy"]))
-    print("Std:", np.std(metrics["accuracy"]))
+    # =========================
+    # REPORTE FINAL (SIN PLOT)
+    # =========================
+    print("\n" + "="*50)
+    print("RESUMEN DETALLADO POR FOLD")
+    print("="*50)
+    print(f"{'Fold':<8} | {'Acc':<8} | {'Prec':<8} | {'Rec':<8} | {'F1':<8}")
+    print("-" * 50)
+    
+    for i in range(k):
+        print(f"{i+1:<8} | {metrics['accuracy'][i]:.4f}   | {metrics['precision'][i]:.4f}   | {metrics['recall'][i]:.4f}   | {metrics['f1'][i]:.4f}")
+    
+    print("-" * 50)
+    print(f"{'PROMEDIO':<8} | {np.mean(metrics['accuracy']):.4f}   | {np.mean(metrics['precision']):.4f}   | {np.mean(metrics['recall']):.4f}   | {np.mean(metrics['f1']):.4f}")
+    print(f"{'DESV. ST':<8} | {np.std(metrics['accuracy']):.4f}   | {np.std(metrics['precision']):.4f}   | {np.std(metrics['recall']):.4f}   | {np.std(metrics['f1']):.4f}")
+    print("="*50)
 
-    # gráfica final
-    plot_kfold(metrics)
 
-
-# =========================
-# RUN
-# =========================
 if __name__ == "__main__":
     kfold_training()
